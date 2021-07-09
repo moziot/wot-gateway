@@ -197,13 +197,7 @@ class ThingModel extends Model {
       [name]: value,
     };
 
-    let href;
-    for (const link of property.links) {
-      if (!link.rel || link.rel === 'property') {
-        href = link.href;
-        break;
-      }
-    }
+    const href = property.forms[0].href;
 
     return API.putJson(href, payload)
       .then((json) => {
@@ -222,10 +216,8 @@ class ThingModel extends Model {
     let getPropertiesPromise;
     if (typeof this.propertiesHref === 'undefined') {
       const urls = Object.values(this.propertyDescriptions).map((v) => {
-        for (const link of v.links) {
-          if (!link.rel || link.rel === 'property') {
-            return link.href;
-          }
+        if (v.forms) {
+          return v.forms[0].href;
         }
       });
       const requests = urls.map((u) => API.getJson(u));

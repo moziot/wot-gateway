@@ -167,13 +167,7 @@ class Thing {
           }
         }
 
-        let href;
-        for (const link of property.links) {
-          if (!link.rel || link.rel === 'property') {
-            href = link.href;
-            break;
-          }
-        }
+        const href = property.forms[0];
 
         if (!href) {
           continue;
